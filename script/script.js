@@ -63,9 +63,15 @@ document.body.append(container);
 function addConent(id,lat,lon){
 
   var a = document.getElementById('cardfooter'+id);
+  var idSelector = document.getElementById('p1'+id);
+  var idSelector1 = document.getElementById('p2'+id);
+  var idSelector2 = document.getElementById('p3'+id);
   var p = document.createElement('p');
+  p.setAttribute('id','p1'+id);
   var p1 = document.createElement('p');
+  p1.setAttribute('id','p2'+id);
   var p2 = document.createElement('p');
+  p2.setAttribute('id','p3'+id);
   fetch('https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=a2520c5c1ca021359afb5b40f238d424')
   .then(
     function(response) {
@@ -77,11 +83,18 @@ function addConent(id,lat,lon){
 
       // Examine the text in the response
       response.json().then(function(weather) {
-        console.log( weather.weather[0].description);
+        
         p.innerHTML = "Sky: "+weather.weather[0].description;
         p1.innerHTML = "Temperature in F: "+weather.main.temp;
         p2.innerHTML = "Pressure: "+weather.main.pressure;
-       a.append(p,p1,p2);
+        if((idSelector === null)&&(idSelector1 === null)&&(idSelector2 === null)){ 
+        a.append(p,p1,p2);
+        }
+        else{
+          a.replaceChild(p,idSelector);
+          a.replaceChild(p1,idSelector1);
+          a.replaceChild(p2,idSelector2);
+        }
       });
     }
   )
